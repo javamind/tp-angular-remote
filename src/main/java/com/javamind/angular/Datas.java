@@ -3,7 +3,6 @@ package com.javamind.angular;
 import com.javamind.angular.dto.Conference;
 import com.javamind.angular.dto.Theme;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneOffset;
