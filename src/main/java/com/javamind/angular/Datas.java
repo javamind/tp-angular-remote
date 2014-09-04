@@ -23,8 +23,8 @@ public class Datas {
     private Datas() {
     }
 
-    public static List<Theme> getThemes() {
-        return Arrays.asList(
+    public static List<Theme> themes =
+        Arrays.asList(
                 new Theme().setId(1L).setLabel("Java"),
                 new Theme().setId(2L).setLabel("Angular JS"),
                 new Theme().setId(3L).setLabel("Agilite"),
@@ -38,10 +38,10 @@ public class Datas {
                 new Theme().setId(11L).setLabel("Test"),
                 new Theme().setId(12L).setLabel("Web")
         );
-    }
 
-    public static List<Conference> getConferences() {
-        return Arrays.asList(
+
+    public static List<Conference> conferences =
+            Arrays.asList(
                 new Conference()
                         .setId(1L)
                         .setName("Mix-IT")
@@ -91,5 +91,4 @@ public class Datas {
                         .setImage("images/logos/logo-summercamp.png")
                         .addThemes(1).addThemes(2).addThemes(3).addThemes(4).addThemes(5).addThemes(6).addThemes(10).addThemes(11)
         );
-    }
 }

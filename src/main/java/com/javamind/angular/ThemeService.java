@@ -1,11 +1,11 @@
 package com.javamind.angular;
 
 import com.javamind.angular.dto.Theme;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * {@link }
@@ -17,16 +17,50 @@ public class ThemeService {
 
     @RequestMapping("/theme")
     public List<Theme> themes() {
-        return  Datas.getThemes();
+        return  Datas.themes;
     }
 
     @RequestMapping("/theme/{id}")
     public Theme theme(@PathVariable Long id) {
-        return Datas.getThemes()
+        return Datas.themes
                 .stream()
                 .filter(t -> id.equals(t.getId()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, consumes="application/json")
+    public Theme update(@RequestBody Theme theme) {
+        if(theme.getLabel() == null || theme.getLabel().length()==0){
+            throw new NullPointerException("Le nom  et l'ID du theme sont obligatoires");
+        }
+
+        //On recherche la conf et on la modifie
+        Optional<Theme> th = Datas.themes
+                .stream()
+                .filter(c -> theme.getId().equals(c.getId()))
+                .findFirst();
+
+        th.ifPresent(c -> BeanUtils.copyProperties(th, c));
+        if(!th.isPresent()){
+            //On ajoute notre objet dans la liste
+            Datas.themes.add(theme);
+        }
+        return theme;
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, consumes="application/json")
+    public void delete(@RequestBody Theme theme) {
+        if(theme.getId()==null){
+            throw new NullPointerException("L'ID de la theme sont obligatoires");
+        }
+
+        //On recherche la conf et on la modifie
+        Datas.themes
+                .stream()
+                .filter(c -> theme.getId().equals(c.getId()))
+                .findFirst()
+                .ifPresent(c -> Datas.themes.remove(c));
     }
 
 }
