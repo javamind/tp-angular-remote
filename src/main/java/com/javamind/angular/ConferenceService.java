@@ -36,15 +36,24 @@ public class ConferenceService {
             throw new NullPointerException("Le nom  et l'ID de la conference sont obligatoires");
         }
 
+        Optional<Conference> conference = Optional.empty();
         //On recherche la conf et on la modifie
-        Optional<Conference> conference = Datas.conferences
-                .stream()
-                .filter(c -> conf.getId().equals(c.getId()))
-                .findFirst();
+        if(conf.getId()!=null) {
+            conference = Datas.conferences
+                    .stream()
+                    .filter(c -> conf.getId().equals(c.getId()))
+                    .findFirst();
+        }
 
         conference.ifPresent(c -> BeanUtils.copyProperties(conf, c));
         if(!conference.isPresent()){
+            Optional<Long> maxid = Datas.conferences
+                    .stream()
+                    .map(c -> c.getId())
+                    .max((id1, id2) -> id1.compareTo(id2));
+
             //On ajoute notre objet dans la liste
+            conf.setId(maxid.orElse(1L));
             Datas.conferences.add(conf);
         }
         return conf;

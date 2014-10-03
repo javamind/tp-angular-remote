@@ -1,5 +1,11 @@
 package com.javamind.angular.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +15,8 @@ import java.util.List;
  *
  * @author EHRET_G
  */
-public class Conference {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Conference implements Serializable{
     private Long id;
     private String name;
     private String description;
@@ -129,5 +136,22 @@ public class Conference {
     public Conference setThemes(List<Integer> themes) {
         this.themes = themes;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Conference that = (Conference) o;
+
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }

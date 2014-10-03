@@ -23,10 +23,15 @@ compileJava {
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url 'http://repo.spring.io/plugins-release'
+    }
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web:1.1.5.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-web:1.2.0.M1")
+    compile("org.springframework.boot:spring-boot-starter-actuator:1.2.0.M1")
+    compile("com.google.guava:guava:16.0.1")
 }
 
 task wrapper(type: Wrapper) {
