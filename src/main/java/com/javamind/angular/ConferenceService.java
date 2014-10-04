@@ -21,7 +21,7 @@ public class ConferenceService {
         return Datas.conferences;
     }
 
-    @RequestMapping("/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public Conference conference(@PathVariable Long id) {
         return Datas.conferences
                 .stream()
@@ -30,7 +30,7 @@ public class ConferenceService {
                 .orElse(null);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes="application/json")
+    @RequestMapping(method = RequestMethod.POST)
     public Conference update(@RequestBody Conference conf) {
         if(conf.getName() == null || conf.getName().length()==0){
             throw new NullPointerException("Le nom  et l'ID de la conference sont obligatoires");
@@ -53,22 +53,22 @@ public class ConferenceService {
                     .max((id1, id2) -> id1.compareTo(id2));
 
             //On ajoute notre objet dans la liste
-            conf.setId(maxid.orElse(1L));
+            conf.setId(maxid.orElse(1L) +10L);
             Datas.conferences.add(conf);
         }
         return conf;
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, consumes="application/json")
-    public void delete(@RequestBody Conference conf) {
-        if(conf.getId()==null){
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        if(id==null){
             throw new NullPointerException("L'ID de la conference sont obligatoires");
         }
 
         //On recherche la conf et on la modifie
         Datas.conferences
                 .stream()
-                .filter(c -> conf.getId().equals(c.getId()))
+                .filter(c -> id.equals(c.getId()))
                 .findFirst()
                 .ifPresent(c -> Datas.conferences.remove(c));
     }

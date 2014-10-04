@@ -49,16 +49,16 @@ public class ThemeService {
         return theme;
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, consumes="application/json")
-    public void delete(@RequestBody Theme theme) {
-        if(theme.getId()==null){
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        if(id==null){
             throw new NullPointerException("L'ID de la theme sont obligatoires");
         }
 
         //On recherche la conf et on la modifie
         Datas.themes
                 .stream()
-                .filter(c -> theme.getId().equals(c.getId()))
+                .filter(c -> id.equals(c.getId()))
                 .findFirst()
                 .ifPresent(c -> Datas.themes.remove(c));
     }
